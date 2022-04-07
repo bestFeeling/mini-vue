@@ -31,4 +31,27 @@ describe('effect', () => {
     expect(age).toBe(12)
     expect(res).toBe('foo')
   })
+
+  it('scheduler', () => {
+    let dummy
+    let run: any
+    const obj = reactive({ foo: 10 })
+    const scheduler = jest.fn(() => {
+      run = runner
+    })
+
+    const runner = effect(() => {
+      dummy = obj.foo
+    }, { scheduler })
+
+    expect(dummy).toBe(10)
+    expect(scheduler).not.toBeCalled()
+
+    obj.foo++
+    expect(dummy).toBe(10)
+    expect(scheduler).toBeCalledTimes(1)
+
+    run()
+    expect(dummy).toBe(11)
+  })
 })

@@ -1,8 +1,11 @@
 
 class Effection {
   fn: any
-  constructor(fn: Function) {
+  options: effectOption | undefined
+
+  constructor(fn: Function, options?: effectOption) {
     this.fn = fn
+    this.options = options
   }
 
   run() {
@@ -25,15 +28,21 @@ export function track(target: any, key: any) {
 export function trigger(target: any, key: any) {
   let effects = depsMap.get(target).get(key);
   for (const eff of effects) {
-    eff.run()
+    if (eff.options && eff.options.scheduler) {
+      eff.options.scheduler()
+    } else {
+      eff.run(true)
+    }
   }
 }
 
 let activeEffect: Effection
-export function effect(fn: Function) {
-  let effect = new Effection(fn)
+
+type effectOption = {
+  scheduler: Function
+}
+export function effect(fn: Function, options?: effectOption) {
+  let effect = new Effection(fn, options)
   effect.run()
-  return () => {
-    return effect.run()
-  }
+  return effect.run.bind(effect)
 }
