@@ -7,10 +7,11 @@ class Effection {
 
   run() {
     activeEffect = this
-    this.fn()
+    return this.fn()
   }
 }
 let depsMap = new Map()
+
 export function track(target: any, key: any) {
   let deps = depsMap.get(target)
   if (!deps) depsMap.set(target, deps = new Map())
@@ -32,4 +33,7 @@ let activeEffect: Effection
 export function effect(fn: Function) {
   let effect = new Effection(fn)
   effect.run()
+  return () => {
+    return effect.run()
+  }
 }

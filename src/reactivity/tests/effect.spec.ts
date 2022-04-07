@@ -20,4 +20,15 @@ describe('effect', () => {
     expect(age).toBe(101)
   })
 
+  it('runner', () => {
+    let age = 10;
+    const runner = effect(() => {
+      age++;
+      return 'foo'
+    })
+    expect(age).toBe(11)
+    const res = runner()
+    expect(age).toBe(12)
+    expect(res).toBe('foo')
+  })
 })
