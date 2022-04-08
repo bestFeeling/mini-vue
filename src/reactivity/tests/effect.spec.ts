@@ -55,23 +55,30 @@ describe('effect', () => {
     expect(dummy).toBe(11)
   })
 
-  it('inner spec', () => {
+  it('seter', () => {
+    const obj2 = reactive({ a: 2 })
+    obj2.a = '123'
+    console.log(obj2.a)
+  })
+
+  it('exist effect', () => {
     const obj = reactive({ a: 1, b: 1, c: 1 })
     let dummy
-    let part
-    effect(() => {
+    let fn = jest.fn(() => {
       dummy = obj.a + obj.b + obj.c
     })
-    effect(() => {
-      part = obj.a + obj.c
-    })
-
+    effect(fn)
     expect(dummy).toBe(3)
-    expect(part).toBe(2)
-    obj.a++
-    expect(dummy).toBe(4)
-    expect(part).toBe(3)
+    expect(fn).toBeCalledTimes(1)
+    obj.a = 3;
+    expect(fn).toBeCalledTimes(2)
 
+    const obj2 = reactive({ a: 2 })
+    // 触发getter 此时全局activeEffect已经存在，于是被记录成obj2.a的effect
+    console.log(obj2.a)
+    // 触发setter 会导致之前的effect被执行
+    obj2.a = 3
+    expect(fn).toBeCalledTimes(2)
   })
 
   it('stop', () => {

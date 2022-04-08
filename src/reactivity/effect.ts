@@ -11,7 +11,9 @@ class Effection {
 
   run() {
     activeEffect = this
-    return this.fn()
+    let res = this.fn()
+    activeEffect = undefined as any;
+    return res
   }
 
   stop() {
@@ -37,12 +39,15 @@ export function track(target: any, key: any) {
 }
 
 export function trigger(target: any, key: any) {
-  let effects = depsMap.get(target).get(key);
-  for (const eff of effects) {
-    if (eff.options && eff.options.scheduler) {
-      eff.options.scheduler()
-    } else {
-      eff.run()
+  let tartgetMap = depsMap.get(target);
+  if (tartgetMap) {
+    let effects = tartgetMap.get(key)
+    for (const eff of effects) {
+      if (eff.options && eff.options.scheduler) {
+        eff.options.scheduler()
+      } else {
+        eff.run()
+      }
     }
   }
 }
