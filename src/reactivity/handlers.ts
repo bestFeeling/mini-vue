@@ -1,4 +1,5 @@
 import { track, trigger } from "./effect";
+import { ReacitveFalgs } from "./reactive";
 
 
 const get = createGet()
@@ -11,6 +12,14 @@ const readonlySet = createSet(true)
 export function createGet(isReadonly = false) {
   return function (target, key) {
     const res = Reflect.get(target, key)
+
+    if (key === ReacitveFalgs.IS_REACTIVE) {
+      return !isReadonly
+    }
+
+    if (key === ReacitveFalgs.IS_READONLY) {
+      return isReadonly
+    }
     if (!isReadonly) {
       //收集依赖
       track(target, key)
