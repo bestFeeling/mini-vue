@@ -20,6 +20,9 @@ export function createGet(isReadonly = false) {
       return isReadonly
     }
 
+    // Note
+    // 实现子Object嵌套的逻辑非常巧妙，是在get的时候对这个才对这个结果进行reactive
+    // 这样没有被访问到的子object就不会reactive 而且 也不会造成过多的reative
     if (isObject(res)) return isReadonly ? readonly(res) : reactive(res)
 
 
