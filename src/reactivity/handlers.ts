@@ -1,5 +1,6 @@
+import { isObject } from "../shared";
 import { track, trigger } from "./effect";
-import { ReacitveFalgs } from "./reactive";
+import { ReacitveFalgs, reactive, readonly } from "./reactive";
 
 
 const get = createGet()
@@ -15,11 +16,13 @@ export function createGet(isReadonly = false) {
 
     if (key === ReacitveFalgs.IS_REACTIVE) {
       return !isReadonly
-    }
-
-    if (key === ReacitveFalgs.IS_READONLY) {
+    } else if (key === ReacitveFalgs.IS_READONLY) {
       return isReadonly
     }
+
+    if (isObject(res)) return isReadonly ? readonly(res) : reactive(res)
+
+
     if (!isReadonly) {
       //收集依赖
       track(target, key)

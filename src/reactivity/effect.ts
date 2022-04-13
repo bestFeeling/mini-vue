@@ -32,6 +32,7 @@ export function track(target: any, key: any) {
   let dep = deps.get(key)
   if (!dep) deps.set(key, dep = new Set())
 
+  if (dep.has(activeEffect)) return
   if (activeEffect) {
     dep.add(activeEffect)
     activeEffect.deps.push(dep)

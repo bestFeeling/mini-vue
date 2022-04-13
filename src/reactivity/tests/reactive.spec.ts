@@ -13,9 +13,35 @@ describe('reactive', () => {
     const obj = reactive({ age: 10 })
     expect(isReactive(obj)).toBe(true)
 
-    const readonlyObj = readonly({age :10});
+    const readonlyObj = readonly({ age: 10 });
     expect(isReactive(readonlyObj)).toBe(false)
 
     expect(isReadonly(readonlyObj)).toBe(true)
+  })
+
+  it('nested reactive', () => {
+    const origin = {
+      nested: {
+        foo: 1,
+      },
+      array: [{ bar: 2 }]
+    }
+    const observed = reactive(origin)
+    expect(isReactive(observed.nested)).toBe(true)
+    expect(isReactive(observed.array)).toBe(true)
+    expect(isReactive(observed.array[0])).toBe(true)
+  })
+
+  it('nested readonly', () => {
+    const origin = {
+      nested: {
+        foo: 1,
+      },
+      array: [{ bar: 2 }]
+    }
+    const observed = readonly(origin)
+    expect(isReadonly(observed.nested)).toBe(true)
+    expect(isReadonly(observed.array)).toBe(true)
+    expect(isReadonly(observed.array[0])).toBe(true)
   })
 })
