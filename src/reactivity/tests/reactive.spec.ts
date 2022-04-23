@@ -1,4 +1,4 @@
-import { isReactive, isReadonly, reactive, readonly } from "../reactive"
+import { isReactive, isReadonly, reactive, readonly, shallowReadonly } from "../reactive"
 
 describe('reactive', () => {
   it('basic use', () => {
@@ -43,5 +43,15 @@ describe('reactive', () => {
     expect(isReadonly(observed.nested)).toBe(true)
     expect(isReadonly(observed.array)).toBe(true)
     expect(isReadonly(observed.array[0])).toBe(true)
+  })
+
+  it('shallow Reactive', () => {
+    const nestest = {
+      name: { first: 'yang' },
+      age: [{ 2022: 29 }]
+    }
+    const wrap = shallowReadonly(nestest)
+    expect(isReadonly(wrap)).toBe(true)
+    expect(isReadonly(wrap.name)).toBe(false)
   })
 })

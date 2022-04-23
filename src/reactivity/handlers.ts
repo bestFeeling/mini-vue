@@ -9,8 +9,9 @@ const set = createSet()
 const readonlyGet = createGet(true)
 const readonlySet = createSet(true)
 
+const shallowReadonlyGet = createGet(true, true)
 
-export function createGet(isReadonly = false) {
+export function createGet(isReadonly = false, shallow = false) {
   return function (target, key) {
     const res = Reflect.get(target, key)
 
@@ -19,6 +20,8 @@ export function createGet(isReadonly = false) {
     } else if (key === ReacitveFalgs.IS_READONLY) {
       return isReadonly
     }
+
+    if (shallow) return res
 
     // Note
     // 实现子Object嵌套的逻辑非常巧妙，是在get的时候对这个才对这个结果进行reactive
@@ -54,4 +57,9 @@ export const baseHandler = {
 export const readonlyHandler = {
   set: readonlySet,
   get: readonlyGet,
+}
+
+export const shallowReadonlyHandler = {
+  set: readonlySet,
+  get: shallowReadonlyGet
 }
