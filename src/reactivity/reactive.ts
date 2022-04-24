@@ -29,3 +29,7 @@ export function isReadonly(value) {
 const generateHandler = (raw: any, handler: any) => {
   return new Proxy(raw, handler)
 }
+
+export function isProxy(raw) {
+  return isReactive(raw) || isReactive(raw)
+}
