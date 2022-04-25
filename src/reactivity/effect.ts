@@ -33,6 +33,10 @@ export function track(target: any, key: any) {
   if (!dep) deps.set(key, dep = new Set())
 
   if (dep.has(activeEffect)) return
+  tractEffect(dep)
+}
+
+export function tractEffect(dep) {
   if (activeEffect) {
     dep.add(activeEffect)
     activeEffect.deps.push(dep)
@@ -43,12 +47,15 @@ export function trigger(target: any, key: any) {
   let tartgetMap = depsMap.get(target);
   if (tartgetMap) {
     let effects = tartgetMap.get(key)
-    for (const eff of effects) {
-      if (eff.options && eff.options.scheduler) {
-        eff.options.scheduler()
-      } else {
-        eff.run()
-      }
+    triggerEffect(effects)
+  }
+}
+export function triggerEffect(dep) {
+  for (const eff of dep) {
+    if (eff.options && eff.options.scheduler) {
+      eff.options.scheduler()
+    } else {
+      eff.run()
     }
   }
 }
