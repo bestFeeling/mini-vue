@@ -1,5 +1,5 @@
 import { effect } from "../effect"
-import { ref } from "../ref"
+import { isRef, proxyRefs, ref, unRef } from "../ref"
 
 describe('ref', () => {
 
@@ -48,6 +48,38 @@ describe('ref', () => {
     warp.value = { age: 40 }
     warp.value.age = 41
     expect(dummy).toBe(41)
+  })
 
+  it('isRef', () => {
+    let age = ref(10)
+    expect(isRef(age)).toBe(true)
+    expect(isRef(10)).toBe(false)
+  })
+
+  it('unRef', () => {
+    const obj = { age: 10 }
+    let wrap = ref(obj)
+    expect(unRef(wrap)).toEqual(obj)
+
+    expect(unRef(ref(10))).toEqual(10)
+  })
+
+  it('proxyRefs', () => {
+    const user = {
+      age: ref(10),
+      name: 'yang'
+    }
+    const proxyUser = proxyRefs(user)
+    expect(user.age.value).toBe(10)
+    expect(proxyUser.age).toBe(10)
+    expect(proxyUser.name).toBe('yang')
+
+    proxyUser.age = 20
+    expect(user.age.value).toBe(20)
+    expect(proxyUser.age).toBe(20)
+
+    proxyUser.age = ref(30)
+    expect(user.age.value).toBe(30)
+    expect(proxyUser.age).toBe(30)
   })
 })
