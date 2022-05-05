@@ -1,5 +1,5 @@
 
-class Effection {
+export class Effection {
   fn: any
   options: effectOption | undefined
   deps: any[] = []
