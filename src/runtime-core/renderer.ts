@@ -9,6 +9,7 @@ export function render(vnode, container) {
 function patch(vnode: any, container: any) {
 
   console.log('vnode type ->', vnode.type)
+  debugger
   if (typeof vnode.type === 'string') {
     processElement(vnode, container);
   } else if (isObject(vnode.type)) {
