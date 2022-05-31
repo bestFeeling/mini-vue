@@ -9,7 +9,7 @@ export function render(vnode, container) {
 function patch(vnode: any, container: any) {
 
   console.log('vnode type ->', vnode.type)
-  debugger
+  // debugger
   if (typeof vnode.type === 'string') {
     processElement(vnode, container);
   } else if (isObject(vnode.type)) {
@@ -17,23 +17,25 @@ function patch(vnode: any, container: any) {
   }
 }
 
-function processComponent(vnode: any, container: any) {
-  mountComponent(vnode, container)
+function processComponent(initialVNode: any, container: any) {
+  mountComponent(initialVNode, container)
 }
 
-function mountComponent(vnode: any, container) {
-  const instance = createComponentInstance(vnode)
+function mountComponent(initialVNode: any, container) {
+  const instance = createComponentInstance(initialVNode)
 
   setupComponent(instance)
-  setupRenderEffect(instance, container)
+  setupRenderEffect(instance, initialVNode, container)
 }
 
-function setupRenderEffect(instance, container) {
-  const subTree = instance.render()
+function setupRenderEffect(instance, initialVNode, container) {
+  const { proxy } = instance
+  const subTree = instance.render.call(proxy)
   console.log(`sub tree -> `, subTree)
   // vnode -> patch
 
   patch(subTree, container)
+  initialVNode.el = subTree.el
 }
 
 function processElement(vnode: any, container: any) {
@@ -41,7 +43,7 @@ function processElement(vnode: any, container: any) {
 }
 
 function mountElement(vnode: any, container: any) {
-  const el = document.createElement(vnode.type)
+  const el = vnode.el = document.createElement(vnode.type)
   const { children, props } = vnode
 
   if (typeof children === 'string') {
