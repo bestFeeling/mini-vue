@@ -15,7 +15,9 @@ export const App = {
         // this.$props
         h('p', { class: 'red' }, this.msg),
         h('p', { class: 'blue' }, 'dom tag name -> ' + (this.$el && this.$el.tagName) || 'no'),
-        h('p', { class: 'blue' }, 'mini-vue')
+        h('div', { class: 'blue' }, [
+          h('div', {}, 'inner div')
+        ])
       ])
   },
 
