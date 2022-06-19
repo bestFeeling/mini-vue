@@ -10,7 +10,11 @@ export const App = {
       class: ['red', 'hard'],
     },
       [
-        h('p', { class: 'red' }, 'hi'),
+        h('p', {
+          class: 'red',
+          onClick: () => { console.log('click') },
+          onMousedown: () => console.log('down ~'),
+        }, 'hi'),
         // this.$el
         // this.$props
         h('p', { class: 'red' }, this.msg),

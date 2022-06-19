@@ -21,8 +21,6 @@ export function setupComponent(instance) {
 
 function initStatefulComponents(instance: any) {
   const component = instance.type
-  console.log()
-  
 
   instance.proxy = new Proxy({_:instance}, PublicInstanceProxyHanlders)
   const { setup } = component

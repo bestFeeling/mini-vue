@@ -58,7 +58,14 @@ function mountElement(vnode: any, container: any) {
   for (const key in props) {
     if (Object.prototype.hasOwnProperty.call(props, key)) {
       const val = props[key];
-      el.setAttribute(key, val)
+      const isOn = /^on[A-Z]/.test(key)
+      if (isOn) {
+        const event = key.slice(2).toLocaleLowerCase()
+        el.addEventListener(event, val)
+      } else {
+        el.setAttribute(key, val)
+      }
+
     }
   }
   container.append(el)
