@@ -1,5 +1,6 @@
 
 import { h } from '../lib/mini-vue.esm.js'
+import Foo from './Foo.js';
 
 export const App = {
   render () {
@@ -15,6 +16,8 @@ export const App = {
           onClick: () => { console.log('click') },
           onMousedown: () => console.log('down ~'),
         }, 'hi'),
+
+        h(Foo, { count: 10 }),
         // this.$el
         // this.$props
         h('p', { class: 'red' }, this.msg),

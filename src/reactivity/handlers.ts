@@ -1,4 +1,5 @@
-import { isObject } from "../shared";
+
+import { isObject } from "../shared/index";
 import { track, trigger } from "./effect";
 import { ReacitveFalgs, reactive, readonly } from "./reactive";
 
@@ -39,7 +40,7 @@ export function createGet(isReadonly = false, shallow = false) {
 export function createSet(isReadonly = false) {
   return function (target, key, value) {
     if (isReadonly) {
-      console.warn('readonly can not set')
+      console.warn(`readonly can not set -> (${key} , ${value})`)
       return true
     }
     const res = Reflect.set(target, key, value)
