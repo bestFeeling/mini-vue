@@ -1,5 +1,5 @@
 
-import { h } from '../lib/mini-vue.esm.js'
+import { h, createTextVNode } from '../lib/mini-vue.esm.js'
 import Foo from './Foo.js';
 import Slots from './slots.js';
 
@@ -8,7 +8,7 @@ export const App = {
   render () {
     const el1 = h('div', {}, 'this is a div')
     const el2 = h('div', {}, [h(Slots, {}, {
-      header: ({ age }) => h('p', {}, 'i am a slots ' + age),
+      header: ({ age }) => [h('p', {}, 'i am a slots ' + age), createTextVNode('你好')],
       footer: () => h('p', {}, ' i am a slots2')
     })])
     window.top.self = this;
