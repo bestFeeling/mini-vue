@@ -1,4 +1,5 @@
-import { h } from "../lib/mini-vue.esm.js";
+import { h, provide, inject } from "../lib/mini-vue.esm.js";
+import Bar from "./Bar.js";
 
 export default {
   name: 'Foo',
@@ -6,6 +7,10 @@ export default {
     console.log(props)
     props.count++;
     console.log(props)
+
+    provide('level', 'level2')
+    const val = inject('level')
+    console.log('val in level2', val)
 
     const btnClick = () => {
       console.log('btn click')
@@ -19,6 +24,6 @@ export default {
   render () {
     const foo = h('p', {}, 'Foo : ' + this.count)
     const btn = h('button', { onClick: this.btnClick }, 'btnClick')
-    return h('div', {}, [foo, btn])
+    return h('div', {}, [h(Bar), foo, btn])
   }
 }

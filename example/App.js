@@ -1,5 +1,5 @@
 
-import { h, createTextVNode } from '../lib/mini-vue.esm.js'
+import { h, createTextVNode, provide } from '../lib/mini-vue.esm.js'
 import Foo from './Foo.js';
 import Slots from './slots.js';
 
@@ -46,6 +46,7 @@ export const App = {
   },
 
   setup () {
+    provide('level', 'level1')
     return {
       msg: ' form Nowell '
     }
