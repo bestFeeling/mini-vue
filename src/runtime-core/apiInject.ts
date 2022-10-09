@@ -4,7 +4,7 @@ export function provide(key, val) {
   const currentInstance = getCurrentInstance()
   if (currentInstance) {
     let { provides } = currentInstance
-    const parentProvides = currentInstance.parent.provides
+    const parentProvides = currentInstance.parent?.provides
     if (provides === parentProvides) {
       provides = currentInstance.provides = Object.create(parentProvides)
     }
